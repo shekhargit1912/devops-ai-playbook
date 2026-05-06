@@ -1,10 +1,12 @@
 resource "kubernetes_namespace_v1" "argocd" {
+provider=kubernetes 
   metadata {
     name = "argocd"
   }
 }
 
 resource "kubernetes_namespace_v1" "monitoring" {
+provider=kubernetes 
   metadata {
     name = "monitoring"
   }
@@ -23,6 +25,7 @@ terraform {
 
 
 resource "helm_release" "argocd" {
+provider=helm
   name       = "argocd"
   namespace  = kubernetes_namespace_v1.argocd.metadata[0].name
   repository = "https://argoproj.github.io/argo-helm"
@@ -48,6 +51,7 @@ resource "helm_release" "argocd" {
 }
 
 resource "helm_release" "monitoring" {
+provider=helm
   name       = "kube-prometheus-stack"
   namespace  = kubernetes_namespace_v1.monitoring.metadata[0].name
 
